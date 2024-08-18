@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Dog</title>
+</head>
+
+<style>
+    #dog {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        width: 300px;
+        height: 300px;
+    }
+
+    h1 {
+        font-size: 3rem;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 2rem;
+        text-align: center;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const scoreText = document.getElementById("score-text");
+        const dog = document.getElementById("dog");
+        let timeSpentPetting = 0;
+        let hasPettedTimer = 0;
+        let hasPetted = false;
+
+        if (localStorage.getItem("timeSpentPetting")) {
+            timeSpentPetting = Number(localStorage.getItem("timeSpentPetting"));
+        }
+
+        let pettingTimer = setInterval(() => {
+            if (hasPetted) {
+                timeSpentPetting += 0.1;
+                localStorage.setItem("timeSpentPetting", Math.round(timeSpentPetting));
+            }
+            scoreText.textContent = "time spent petting: " + Math.round(timeSpentPetting) + " seconds";
+            if (timeSpentPetting - hasPettedTimer >= 0.5) {
+                hasPetted = false;
+                hasPettedTimer = timeSpentPetting;
+            }
+        }, 100);
+
+        dog.addEventListener("mousedown", () => {
+            hasPetted = true;
+        });
+    });
+</script>
+
+<body>
+    <h1>pet dog: the website</h1>
+    <h2 id="score-text">time spent petting: 0 seconds</h2>
+    <img id="dog" src="dog.png"> 
+</body>
+</html>
